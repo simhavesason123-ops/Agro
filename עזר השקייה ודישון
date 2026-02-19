@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>עזר השקייה ודישון</title>
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="עזר השקייה">
+<meta name="mobile-web-app-capable" content="yes">
+
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root { --bg: #0a0f0a; --surface: #111711; --surface2: #1a2319; --border: #2a3d29; --green: #4ade80; --amber: #fbbf24; --red: #f87171; --blue: #60a5fa; --text: #e8f0e8; --text-dim: #7a9478; --accent: #a3e635; }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  body { font-family: 'Heebo', sans-serif; background: var(--bg); color: var(--text); padding-bottom: 2rem; line-height: 1.4; }
+  header { padding: 1.5rem 1.5rem 1.2rem; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; background: #0f1a0f; position: sticky; top: 0; z-index: 100; }
+  .logo { width: 36px; height: 36px; background: var(--accent); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; color: #000; font-weight:bold;}
+  h1 { font-size: 1.3rem; font-weight: 900; }
+  h1 span { color: var(--accent); }
+  .grid { display: grid; grid-template-columns: 1fr; gap: 1rem; padding: 1rem; max-width: 800px; margin: 0 auto; }
+  .panel { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; box-shadow: 0 4px 20px rgba(0,0,0,0.3); }
+  .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;}
+  .field-group { margin-bottom: 1rem; }
+  label { font-size: 0.8rem; color: var(--text-dim); display: block; margin-bottom: 0.3rem; font-weight: 500; }
+  input { width: 100%; background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 0.8rem 0.6rem; color: var(--text); font-family: 'Space Mono', monospace; font-size: 1rem; outline: none; transition: 0.2s; -webkit-appearance: none; }
+  input:focus { border-color: var(--accent); background: #222d21; }
+  .btn-analyze { width: 100%; padding: 1.1rem; background: var(--accent); color: #000; border: none; border-radius: 12px; font-weight: 900; font-size: 1.1rem; cursor: pointer; margin-top: 1rem; box-shadow: 0 4px 15px rgba(163, 230, 53, 0.2); }
+  .btn-analyze:active { transform: scale(0.96); opacity: 0.9; }
+  .target-box { background: #162016; border: 1px dashed var(--border); padding: 1rem; border-radius: 8px; margin-top: 1rem; }
+  .res-card { background: var(--surface2); padding: 1rem; border-radius: 8px; margin-bottom: 0.5rem; border-right: 4px solid var(--text-dim); display: flex; justify-content: space-between; align-items: center; animation: fadeIn 0.3s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+  .res-card.alert { border-color: var(--amber); }
+  .res-card.good { border-color: var(--green); }
+  .res-card.bad { border-color: var(--red); }
+  .explanation { font-size: 0.95rem; line-height: 1.6; margin-top: 1rem; padding: 1rem; background: #1a2f1a; border-radius: 8px; border: 1px solid #22c55e44; }
+  .section-title { font-size: 0.85rem; color: var(--accent); margin: 1.2rem 0 0.8rem; border-bottom: 1px dashed var(--border); padding-bottom: 0.3rem; text-transform: uppercase; letter-spacing: 0.5px; }
+  
+  @media (max-height: 500px) { header { padding: 0.5rem 1rem; } .panel { padding: 1rem; } }
+</style>
+</head>
+<body>
+
+<header>
+  <div style="display:flex; align-items:center; gap:0.8rem;">
+    <div class="logo">🌱</div>
+    <div><h1>עזר <span>השקייה ודישון</span></h1></div>
+  </div>
+  <div style="font-size: 0.7rem; color: var(--text-dim);">v5.8</div>
+</header>
+
+<div class="grid">
+  <div class="panel">
+    <div class="field-group"><label>EC ברז (מים נקיים)</label><input type="number" id="ec_tap" step="0.1" inputmode="decimal" placeholder="למשל 0.4"></div>
+    <div class="section-title">בטפטפת</div>
+    <div class="field-group"><label>EC טפטפת</label><input type="number" id="ec_drip" step="0.1" inputmode="decimal"></div>
+    <div class="row-2">
+      <div><label>חנקה (NO3)</label><input type="number" id="no3_drip" inputmode="numeric"></div>
+      <div><label>אשלגן (K)</label><input type="number" id="k_drip" inputmode="numeric"></div>
+    </div>
+    <div class="section-title">במשאב</div>
+    <div class="field-group"><label>EC משאב</label><input type="number" id="ec_drain" step="0.1" inputmode="decimal"></div>
+    <div class="row-2">
+      <div><label>חנקה (NO3)</label><input type="number" id="no3_drain" inputmode="numeric"></div>
+      <div><label>אשלגן (K)</label><input type="number" id="k_drain" inputmode="numeric"></div>
+    </div>
+    <div class="field-group"><label>pH משאב</label><input type="number" id="ph_drain" step="0.1" inputmode="decimal"></div>
+    
+    <div class="target-box">
+      <label style="margin-bottom:0.8rem; display:block; font-weight:bold; color: var(--accent);">ערכי יעד במשאב</label>
+      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:0.8rem;">
+        <div><label>חנקה מינ'</label><input type="number" id="t_no3_min" placeholder="300"></div>
+        <div><label>חנקה מקס'</label><input type="number" id="t_no3_max" placeholder="550"></div>
+        <div><label>pH מינ'</label><input type="number" id="t_ph_min" placeholder="5.5"></div>
+        <div><label>pH מקס'</label><input type="number" id="t_ph_max" placeholder="6.5"></div>
+        <div><label>אשלגן מינ'</label><input type="number" id="t_k_min" placeholder="160"></div>
+        <div><label>אשלגן מקס'</label><input type="number" id="t_k_max" placeholder="200"></div>
+      </div>
+    </div>
+    <button class="btn-analyze" onclick="analyze()">⚡ נתח נתונים</button>
+  </div>
+  <div class="panel" id="results-panel" style="display:none;"><div id="res-content"></div></div>
+</div>
+
+<script>
+// הלוגיקה נשארה זהה לחלוטין - כולל חוק אריק והדלתות
+function analyze() {
+  const ec_tap = parseFloat(document.getElementById('ec_tap').value) || 0;
+  const ec_drip = parseFloat(document.getElementById('ec_drip').value);
+  const no3_drip = parseFloat(document.getElementById('no3_drip').value);
+  const ec_drain = parseFloat(document.getElementById('ec_drain').value);
+  const no3_drain = parseFloat(document.getElementById('no3_drain').value);
+  const ph_drain = parseFloat(document.getElementById('ph_drain').value);
+  const k_drain = parseFloat(document.getElementById('k_drain').value) || 0;
+
+  const no3_min = parseFloat(document.getElementById('t_no3_min').value) || 300;
+  const no3_max = parseFloat(document.getElementById('t_no3_max').value) || 550;
+  const ph_min = parseFloat(document.getElementById('t_ph_min').value) || 5.5;
+  const ph_max = parseFloat(document.getElementById('t_ph_max').value) || 6.5;
+  const k_min = parseFloat(document.getElementById('t_k_min').value) || 160;
+  const k_max = parseFloat(document.getElementById('t_k_max').value) || 200;
+
+  if(isNaN(ec_drip) || isNaN(ec_drain) || isNaN(no3_drip) || isNaN(no3_drain)) { alert("נא למלא EC וחנקה בטפטפת ובמשאב."); return; }
+
+  const delta = parseFloat((ec_drain - ec_drip).toFixed(2));
+  const fert_contrib = parseFloat((ec_drip - ec_tap).toFixed(2));
+
+  let html = '';
+  let action_water = 'ללא שינוי', action_fert = 'ללא שינוי', action_acid = 'ללא שינוי';
+  let exp_water = '', exp_fert = '', exp_acid = '', override_fert = false, pump_issue = false;
+
+  if (ec_tap > 0) {
+    if (fert_contrib < 0.3) { pump_issue = true; html += `<div class="res-card bad"><span>⚠️ תרומת דשן נמוכה (${fert_contrib} EC)</span></div>`; }
+    else { html += `<div class="res-card good"><span>✓ תרומת דשן תקינה (${fert_contrib} EC)</span></div>`; }
+  }
+
+  if (delta >= 0.4) { action_water = 'להעלות ↑'; html += `<div class="res-card bad"><span>🔴 המלחה / דרושה שטיפה</span></div>`; exp_water = `<strong>מים:</strong> דלתא גבוהה (${delta}). העלאת מים לשטיפה.`; }
+  else if (delta > 0.2 && delta < 0.4) { html += `<div class="res-card good"><span>🟢 מצב מים תקין (דלתא ${delta})</span></div>`; exp_water = `<strong>מים:</strong> דלתא תקינה.`; }
+  else if (delta === 0.2) {
+    if (no3_drain < no3_min) { action_water = 'להוריד ↓'; html += `<div class="res-card alert"><span>🟡 שטיפת יתר (דלתא 0.2)</span></div>`; exp_water = `<strong>מים:</strong> דלתא 0.2 עם חנקה נמוכה. הורדת מים.`; }
+    else { override_fert = true; html += `<div class="res-card good"><span>🟢 מצב יציב (חוק אריק)</span></div>`; exp_water = `<strong>מים:</strong> דלתא 0.2 יציבה.`; exp_fert = `<strong>דשן:</strong> ללא שינוי.`; }
+  }
+  else if (delta < 0.2 && delta > -0.3) { action_water = 'להוריד ↓'; html += `<div class="res-card alert"><span>🟡 שטיפת יתר (דלתא ${delta})</span></div>`; exp_water = `<strong>מים:</strong> דלתא נמוכה. הורדת מים.`; }
+  else if (delta <= -0.3) { action_water = 'להעלות ↑'; html += `<div class="res-card bad"><span>🔴 התייבשות המצע (${delta})</span></div>`; exp_water = `<strong>מים:</strong> דלתא שלילית חריפה. העלאת מים.`; }
+
+  if (no3_drain > no3_max) { html += `<div class="res-card bad"><span>🌡️ חנקה גבוהה (${no3_drain})</span></div>`; }
+  else if (no3_drain < no3_min) { html += `<div class="res-card alert"><span>📉 חנקה נמוכה (${no3_drain})</span></div>`; }
+  else { html += `<div class="res-card good"><span>✓ חנקה תקינה (${no3_drain})</span></div>`; }
+
+  if (k_drain > 0) {
+    if (k_drain > k_max) html += `<div class="res-card bad"><span>🌡️ אשלגן גבוה (${k_drain})</span></div>`;
+    else if (k_drain < k_min) html += `<div class="res-card alert"><span>📉 אשלגן נמוך (${k_drain})</span></div>`;
+    else html += `<div class="res-card good"><span>✓ אשלגן תקין (${k_drain})</span></div>`;
+  }
+
+  if (!isNaN(ph_drain)) {
+    if (ph_drain > ph_max) { action_acid = 'להעלות חומצה ↑'; html += `<div class="res-card bad"><span>🌡️ pH גבוה (${ph_drain})</span></div>`; exp_acid = `<strong>חומצה:</strong> להעלות מינון.`; }
+    else if (ph_drain < ph_min) { action_acid = 'להפחית חומצה ↓'; html += `<div class="res-card bad"><span>🧪 pH נמוך (${ph_drain})</span></div>`; exp_acid = `<strong>חומצה:</strong> להפחית מינון.`; }
+    else { html += `<div class="res-card good"><span>✓ pH תקין (${ph_drain})</span></div>`; }
+  }
+
+  if (pump_issue) { action_fert = 'בדוק משאבה!'; exp_fert = `<strong>דשן:</strong> חשד לתקלה.`; }
+  else if (!override_fert) {
+    if (no3_drain > no3_max) { action_fert = 'להוריד ↓'; exp_fert = `<strong>דשן:</strong> חנקה גבוהה. להוריד ריכוז.`; }
+    else if (no3_drain < no3_min) { 
+        if (delta >= 0.4) { action_fert = 'ללא שינוי'; exp_fert = `<strong>דשן:</strong> חסר, אך עקב המלחה נשטוף קודם.`; }
+        else { action_fert = 'להעלות ↑'; exp_fert = `<strong>דשן:</strong> חנקה נמוכה. להעלות ריכוז.`; }
+    }
+    else { exp_fert = `<strong>דשן:</strong> חנקה תקינה.`; }
+  }
+
+  html += `<div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:0.5rem; margin-top:1rem; text-align:center;">
+    <div style="background:var(--surface2); padding:0.8rem; border-radius:8px; border:1px solid var(--border);"><div style="font-size:0.6rem; color:var(--text-dim);">מים</div><div style="font-size:0.9rem; font-weight:bold;">${action_water}</div></div>
+    <div style="background:var(--surface2); padding:0.8rem; border-radius:8px; border:1px solid var(--border);"><div style="font-size:0.6rem; color:var(--text-dim);">דשן</div><div style="font-size:0.9rem; font-weight:bold;">${action_fert}</div></div>
+    <div style="background:var(--surface2); padding:0.8rem; border-radius:8px; border:1px solid var(--border);"><div style="font-size:0.6rem; color:var(--text-dim);">חומצה</div><div style="font-size:0.9rem; font-weight:bold;">${action_acid}</div></div>
+  </div><div class="explanation">${exp_water}<br>${exp_fert}<br>${exp_acid}</div>`;
+
+  document.getElementById('res-content').innerHTML = html;
+  document.getElementById('results-panel').style.display = 'block';
+  window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>
